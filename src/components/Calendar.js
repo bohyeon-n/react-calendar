@@ -12,8 +12,7 @@ export default class Calendar extends React.Component {
     }
     return result;
   }
-  forward = (today = 1) => {
-    console.log("hihihihihihi" + today);
+  forward = today => {
     const { month, year } = this.state;
     if (month === 11) {
       this.getDays(year + 1, 0, today);
@@ -21,7 +20,7 @@ export default class Calendar extends React.Component {
       this.getDays(year, month + 1, today);
     }
   };
-  backward = (today = 1) => {
+  backward = today => {
     const { month, year } = this.state;
     if (month === 0) {
       this.getDays(year - 1, 11, today);
@@ -30,8 +29,6 @@ export default class Calendar extends React.Component {
     }
   };
   handleClickCell = today => {
-    console.log(today);
-    console.log(today < 15);
     today > 15 ? this.backward(today) : this.forward(today);
   };
   getDays = (year, month, today = new Date().getDate()) => {
@@ -61,6 +58,7 @@ export default class Calendar extends React.Component {
         day++;
       }
     }
+
     arrays = this.chunkArray(arrays, 7);
     this.setState({
       arrays,
@@ -83,11 +81,11 @@ export default class Calendar extends React.Component {
     return (
       <div className="container">
         <div className="month">
-          <button onClick={this.backward}>뒤로</button>
+          <button onClick={e => this.backward(1)}>뒤로</button>
           <button onClick={this.nowDate}>
             {year}/{month + 1}
           </button>
-          <button onClick={this.forward}>앞으로</button>
+          <button onClick={e => this.forward(1)}>앞으로</button>
         </div>
         <div className="day-title">
           <div className="date-row">
