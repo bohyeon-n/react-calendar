@@ -12,28 +12,35 @@ export default class Calendar extends React.Component {
     }
     return result;
   }
-  forward = e => {
+  forward = (today = 1) => {
+    console.log("hihihihihihi" + today);
     const { month, year } = this.state;
     if (month === 11) {
-      this.getDays(year + 1, 0);
+      this.getDays(year + 1, 0, today);
     } else {
-      this.getDays(year, month + 1);
+      this.getDays(year, month + 1, today);
     }
   };
-  backward = e => {
+  backward = (today = 1) => {
     const { month, year } = this.state;
     if (month === 0) {
-      this.getDays(year - 1, 11);
+      this.getDays(year - 1, 11, today);
     } else {
-      this.getDays(year, month - 1);
+      this.getDays(year, month - 1, today);
     }
   };
-  getDays = (year, month) => {
-    // 일수
+  handleClickCell = today => {
+    console.log(today);
+    console.log(today < 15);
+    today > 15 ? this.backward(today) : this.forward(today);
+  };
+  getDays = (year, month, today = new Date().getDate()) => {
+    // 전체 일수
     const days = new Date(year, month, 0).getDate();
     // 그 달의 1일 요일
     let day = new Date(year, month, 1).getDay();
-    //day가 0이 아니면 (일요일) 전 달에서 그만큼 가져오기
+    //day가 0이 아니면 (일요일) 전 달에서 그만큼 가져오기(미리보기)
+
     let arrays = [...Array(days)].map((value, index) => index + 1);
     if (day !== 0) {
       let days = new Date(year, month, 0).getDate();
@@ -43,7 +50,7 @@ export default class Calendar extends React.Component {
         days--;
       }
     }
-    // 마지막 일자가 토요일이 아니면 다음 달 가져오기
+    // 마지막 일자가 토요일(6)이 아니면 다음 달에서 가져오기(미리보기)
     let lastDay = parseInt(new Date(year, month, days).getDay(), 10);
 
     if (lastDay !== 6) {
@@ -58,23 +65,26 @@ export default class Calendar extends React.Component {
     this.setState({
       arrays,
       month: parseInt(month, 10),
-      year: parseInt(year, 10)
+      year: parseInt(year, 10),
+      today: parseInt(today, 10)
     });
   };
-  componentDidMount() {
+  nowDate = () => {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
     this.getDays(year, month);
+  };
+  componentDidMount() {
+    this.nowDate();
   }
   week = ["일", "월", "화", "수", "목", "금", "토"];
   render() {
-    console.log(this.state);
-    const { arrays, month, year } = this.state;
+    const { arrays, month, year, today } = this.state;
     return (
       <div className="container">
         <div className="month">
           <button onClick={this.backward}>뒤로</button>
-          <button>
+          <button onClick={this.nowDate}>
             {year}/{month + 1}
           </button>
           <button onClick={this.forward}>앞으로</button>
@@ -94,11 +104,19 @@ export default class Calendar extends React.Component {
             {array.map(
               (num, i) =>
                 num.day ? (
-                  <div key={i} className="date-cell last-month ">
+                  <div
+                    key={i}
+                    className="date-cell last-month "
+                    onClick={e => this.handleClickCell(num.day)}
+                  >
                     {num.day}
                   </div>
                 ) : (
-                  <div key={i} className="date-cell">
+                  <div
+                    key={i}
+                    className={today === num ? "date-cell today" : "date-cell"}
+                    onClick={e => this.setState({ today: num })}
+                  >
                     {num}
                   </div>
                 )

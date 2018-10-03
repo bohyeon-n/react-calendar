@@ -17,4 +17,8 @@
 .container .date-row .date-cell.last-month {
   color: gray;
 }
+
+.container .date-row .date-cell.today {
+  background: paleturquoise;
+}
 /*# sourceMappingURL=index.css.map */

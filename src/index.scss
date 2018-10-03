@@ -1,14 +1,17 @@
 .container {
-  .date-row {
-    display: flex;
-    flex-direction: row;
-    .date-cell {
-      width: 3rem;
-      height: 3rem;
-      border: 1px solid pink;
-      &.last-month {
-        color: gray;
-      }
+    .date-row {
+        display: flex;
+        flex-direction: row;
+        .date-cell {
+            width: 3rem;
+            height: 3rem;
+            border: 1px solid pink;
+            &.last-month {
+                color: gray;
+            }
+            &.today {
+                background: paleturquoise;
+            }
+        }
     }
-  }
 }
