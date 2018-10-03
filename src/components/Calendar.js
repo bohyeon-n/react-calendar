@@ -33,12 +33,13 @@ export default class Calendar extends React.Component {
   };
   getDays = (year, month, today = new Date().getDate()) => {
     // 전체 일수
-    const days = new Date(year, month, 0).getDate();
+    const days = new Date(year, month + 1, 0).getDate();
     // 그 달의 1일 요일
     let day = new Date(year, month, 1).getDay();
     //day가 0이 아니면 (일요일) 전 달에서 그만큼 가져오기(미리보기)
-
+    console.log(days);
     let arrays = [...Array(days)].map((value, index) => index + 1);
+    console.log(arrays);
     if (day !== 0) {
       let days = new Date(year, month, 0).getDate();
       while (day > 0) {
