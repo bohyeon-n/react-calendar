@@ -37,7 +37,6 @@ export default class Calendar extends React.Component {
     // 그 달의 1일 요일
     let day = new Date(year, month, 1).getDay();
     //day가 0이 아니면 (일요일) 전 달에서 그만큼 가져오기(미리보기)
-    console.log(days);
     let arrays = [...Array(days)].map((value, index) => index + 1);
     console.log(arrays);
     if (day !== 0) {
@@ -50,14 +49,17 @@ export default class Calendar extends React.Component {
     }
     // 마지막 일자가 토요일(6)이 아니면 다음 달에서 가져오기(미리보기)
     let lastDay = parseInt(new Date(year, month, days).getDay(), 10);
+    let count = 1;
 
     if (lastDay !== 6) {
-      let day = 1;
       while (lastDay < 6) {
         lastDay++;
-        arrays.push({ day });
-        day++;
+        arrays.push({ day: count++ });
       }
+    }
+    console.log(arrays.length);
+    while (arrays.length < 42) {
+      arrays.push({ day: count++ });
     }
 
     arrays = this.chunkArray(arrays, 7);
