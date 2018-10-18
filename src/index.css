@@ -1,4 +1,43 @@
-.container .date-row {
+.container {
+  width: 40rem;
+  background: #fff;
+}
+
+.container .calendar-header {
+  width: 35rem;
+  margin: 0 auto;
+  height: 5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container .calendar-header .button {
+  display: inline-block;
+}
+
+.container .calendar-header .button button {
+  margin-left: 1rem;
+}
+
+.container .calendar-header .today {
+  position: absolute;
+  left: 40%;
+  width: 20%;
+  display: inline-block;
+  font-size: 2rem;
+}
+
+.container .calendar-content {
+  width: 40rem;
+}
+
+.container .calendar-content .date-row {
+  width: 35rem;
+  margin: 0 auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -8,17 +47,23 @@
           flex-direction: row;
 }
 
-.container .date-row .date-cell {
-  width: 3rem;
-  height: 3rem;
-  border: 1px solid pink;
+.container .calendar-content .date-row .date-cell {
+  width: 5rem;
+  height: 5rem;
+  border: 0.5px solid #e9e9e9;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
-.container .date-row .date-cell.last-month {
-  color: gray;
+.container .calendar-content .date-row .date-cell.last-month {
+  color: #e9e9e9;
 }
 
-.container .date-row .date-cell.today {
-  background: paleturquoise;
+.container .calendar-content .date-row .date-cell.today {
+  background: #fcf8e3;
+}
+
+.container .calendar-content .date-row .date-cell .event {
+  background: #a987c0;
 }
 /*# sourceMappingURL=index.css.map */

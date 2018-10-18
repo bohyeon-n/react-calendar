@@ -1,16 +1,52 @@
+$grey: #e9e9e9;
+$grey-blue: #a987c0;
+$sub-color: #917697;
+$yellow: #fcf8e3;
+$cell-width: 5rem;
 .container {
-    .date-row {
+    width: $cell-width * 8;
+    background: #fff;
+    .calendar-header {
+        width: $cell-width * 7;
+        margin: 0 auto;
+        height: $cell-width;
         display: flex;
-        flex-direction: row;
-        .date-cell {
-            width: 3rem;
-            height: 3rem;
-            border: 1px solid pink;
-            &.last-month {
-                color: gray;
+        align-items: center;
+        .button {
+            display: inline-block;
+            button {
+                margin-left: 1rem;
             }
-            &.today {
-                background: paleturquoise;
+        }
+        .today {
+            position: absolute;
+            left: 40%;
+            width: 20%;
+            display: inline-block;
+            font-size: 2rem;
+        }
+    }
+    .calendar-content {
+        width: $cell-width * 8;
+        .date-row {
+            width: $cell-width * 7;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            .date-cell {
+                width: $cell-width;
+                height: $cell-width;
+                border: 0.5px solid $grey;
+                box-sizing: border-box;
+                &.last-month {
+                    color: $grey;
+                }
+                &.today {
+                    background: $yellow;
+                }
+                .event {
+                    background: $grey-blue;
+                }
             }
         }
     }
