@@ -37,8 +37,17 @@ export default class Calendar extends React.Component {
     // 그 달의 1일 요일
     let day = new Date(year, month, 1).getDay();
     //day가 0이 아니면 (일요일) 전 달에서 그만큼 가져오기(미리보기)
-    let arrays = [...Array(days)].map((value, index) => index + 1);
-    console.log(arrays);
+    let arrays = [...Array(days)].map((value, index) => {
+      return { day: index + 1, month: month + 1 };
+    });
+
+    // 이벤트 가져오기
+    this.props.events.map(event => {
+      const date = new Date(event.time * 1000);
+      if (date.getFullYear() === year && date.getMonth() === month) {
+        arrays[date.getDate() - 1].event = event.title;
+      }
+    });
     if (day !== 0) {
       let days = new Date(year, month, 0).getDate();
       while (day > 0) {
@@ -47,19 +56,12 @@ export default class Calendar extends React.Component {
         days--;
       }
     }
-    // 마지막 일자가 토요일(6)이 아니면 다음 달에서 가져오기(미리보기)
-    let lastDay = parseInt(new Date(year, month, days).getDay(), 10);
+    // 다음달 미리보기 6주로 맞춤
+
     let count = 1;
 
-    if (lastDay !== 6) {
-      while (lastDay < 6) {
-        lastDay++;
-        arrays.push({ day: count++ });
-      }
-    }
-    console.log(arrays.length);
     while (arrays.length < 42) {
-      arrays.push({ day: count++ });
+      arrays.push({ day: count++, month: month + 2 });
     }
 
     arrays = this.chunkArray(arrays, 7);
@@ -80,17 +82,22 @@ export default class Calendar extends React.Component {
   }
   week = ["일", "월", "화", "수", "목", "금", "토"];
   render() {
+    const { evnets } = this.props;
     const { arrays, month, year, today } = this.state;
+    console.log(arrays);
     return (
       <div className="container">
-        <div className="month">
-          <button onClick={e => this.backward(1)}>뒤로</button>
-          <button onClick={this.nowDate}>
+        <div className="calendar-header">
+          <div className="button">
+            <button onClick={e => this.backward(1)}>뒤로</button>
+            <button onClick={e => this.forward(1)}>앞으로</button>
+            <button onClick={this.nowDate}>today</button>
+          </div>
+          <div className="today">
             {year}/{month + 1}
-          </button>
-          <button onClick={e => this.forward(1)}>앞으로</button>
+          </div>
         </div>
-        <div className="day-title">
+        <div className="calendar-content">
           <div className="date-row">
             {this.week.map(day => (
               <div key={day} className="date-cell">
@@ -98,32 +105,37 @@ export default class Calendar extends React.Component {
               </div>
             ))}
           </div>
-        </div>
 
-        {arrays.map((array, i) => (
-          <div key={i} className="date-row">
-            {array.map(
-              (num, i) =>
-                num.day ? (
-                  <div
-                    key={i}
-                    className="date-cell last-month "
-                    onClick={e => this.handleClickCell(num.day)}
-                  >
-                    {num.day}
-                  </div>
-                ) : (
-                  <div
-                    key={i}
-                    className={today === num ? "date-cell today" : "date-cell"}
-                    onClick={e => this.setState({ today: num })}
-                  >
-                    {num}
-                  </div>
-                )
-            )}
-          </div>
-        ))}
+          {arrays.map((array, i) => (
+            <div key={i} className="date-row">
+              {array.map(
+                (num, i) =>
+                  num.month !== month + 1 ? (
+                    <div
+                      key={i}
+                      className="date-cell last-month "
+                      onClick={e => this.handleClickCell(num.day)}
+                    >
+                      {num.day}
+                    </div>
+                  ) : (
+                    <div
+                      key={i}
+                      className={
+                        today === num.day ? "date-cell today" : "date-cell"
+                      }
+                      onClick={e => this.setState({ today: num })}
+                    >
+                      {num.day}
+                      {num.event ? (
+                        <dvi className="event">{num.event}</dvi>
+                      ) : null}
+                    </div>
+                  )
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
